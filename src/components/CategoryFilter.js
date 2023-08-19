@@ -1,23 +1,24 @@
-import React, {useState} from "react";
+import React from "react";
 
-function CategoryFilter({categories, filter, handleTaskFilter}) {
-  //console.log("filter", filter)
-  const catList = categories.map((category) => (
-    <button 
-    key={category} 
-    className={filter === category ? "selected" : null}
-    onClick={handleTaskFilter}>
-      {category}
-    </button>
-  ))
-
+function CategoryFilter({categories, selectedCategory, onSelectCategory }) {
+  
+  const categoryButtons = categories.map((category) => {
+    const className = category === selectedCategory ? "selected" : null;
+    return (
+      <button
+        key={category}
+        className={className}
+        onClick={() => onSelectCategory(category)}
+        >
+          {category}
+        </button>
+    )
+  })
   
   return (
-    <div className="categories">
+   <div className="categories">
       <h5>Category filters</h5>
-      <div>
-        {catList}
-      </div>
+      {categoryButtons}
     </div>
   );
 }

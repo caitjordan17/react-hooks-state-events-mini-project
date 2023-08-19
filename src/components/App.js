@@ -7,24 +7,33 @@ import { CATEGORIES, TASKS } from "../data";
 console.log("Here's the data you're working with");
 console.log({ CATEGORIES, TASKS });
 
-const categories = CATEGORIES
-const tasks = TASKS
-
 function App() {
-  const [filter, setFilter] = useState("All");
-  
-  function handleTaskFilter(event){
-    setFilter(event.target.textContent)
+  const [tasks, setTasks] = useState(TASKS);
+  const [category, setCategory] = useState("All") 
+
+  function onDeleteTask(deletedText){
+    setTasks(tasks.filter((task) => task.text != deletedText));
   }
+
+  function handleAddTask(newTask){
+    setTasks([...tasks, newTask])
+  }
+
+  const displayedTasks = tasks.filter((task) => category === "All" || task.category === category);
 
   return (
     <div className="App">
       <h2>My tasks</h2>
-      <CategoryFilter categories={categories} filter={filter} handleTaskFilter={handleTaskFilter}/>
-      <NewTaskForm />
-      <TaskList tasks={tasks} selectedCat={filter}/>
+      <CategoryFilter categories={CATEGORIES} selectedCategory={category} onSelectCategory={setCategory}/>
+      <NewTaskForm categories={CATEGORIES.filter((cat) => cat !== "All")}
+      onTaskFormSubmit={handleAddTask}/>
+      <TaskList tasks={displayedTasks} onDeleteTask={onDeleteTask}/>
     </div>
   );
 }
 
 export default App;
+
+// just added tasks to list, added delete button
+// next up category filter
+//    - display categories
